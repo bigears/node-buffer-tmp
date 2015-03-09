@@ -1,0 +1,15 @@
+{
+  "name": "buffer-tmp",
+  "version": "1.0.2",
+  "description": "Pipe a stream to a temp file then get a read stream back on the same file",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^2.4.1",
+    "tmp": "0.0.25"
+  }
+}
