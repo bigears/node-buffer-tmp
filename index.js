@@ -1,7 +1,7 @@
-var Promise = require('bluebird')
-, tmp = Promise.promisifyAll(require('tmp'))
-, fs = Promise.promisifyAll(require('fs'))
-;
+var Promise = require('bluebird');
+var tmp = require('tmp'));
+var fs = require('fs');
+var debug = require('debug')('buffer-tmp');
 
 module.exports = function(stream) {
   return new Promise(function(resolve,reject) {
@@ -9,17 +9,26 @@ module.exports = function(stream) {
       reject(err);
     });
 
-    tmp.fileAsync().spread(function(path, fd) {
-      var writeStream = fs.createWriteStream(path);
+    tmp.file(function tempFileCreated(err, path, fd, cleanupCallback) {
+      if(err) { return reject(err); }
+
+      debug('file:', path);
+
+      var writeStream = fs.createWriteStream(path, {
+        defaultEncoding: 'binary',
+        fd: fd
+      });
 
       writeStream.on('error', function(err) {
         reject(err);
       });
 
       writeStream.on('finish', function() {
-        var readStream = fs.createReadStream(path);
+        var readStream = fs.createReadStream(path, {
+          encoding: 'binary'
+        });
         readStream.on('end', function() {
-          fs.unlinkAsync(path);
+          cleanupCallback();
         });
         resolve(readStream);
       });
