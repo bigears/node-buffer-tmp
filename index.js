@@ -1,5 +1,5 @@
 var Promise = require('bluebird');
-var tmp = require('tmp'));
+var tmp = require('tmp');
 var fs = require('fs');
 var debug = require('debug')('buffer-tmp');
 
